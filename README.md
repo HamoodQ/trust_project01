@@ -4,21 +4,18 @@ Internet of Things (IoT) systems are expected to be deployed as solutions to pro
 
 This repository provides an implementation of such a system to facilitate trust-based task offloading. We provide two example applications and multiple example trust models.
 
-The project was funded by [PETRAS](https://petras-iot.org/project/evaluating-trustworthiness-of-edge-based-multi-tenanted-iot-devices-team/), for more information see [here](https://mbradbury.github.io/projects/project-6-TEAM/).
-
-This system architecture is described in: **Matthew Bradbury**, Arshad Jhumka, and Tim Watson. Trust Assessment in 32 KiB of RAM: Multi-application Trust-based Task Offloading for Resource-constrained IoT Nodes. In *The 36th ACM/SIGAPP Symposium on Applied Computing*, SAC'21, 1–10. Virtual Event, Republic of Korea, 22–26 March 2021. ACM. [doi:10.1145/3412841.3441898](https://doi.org/10.1145/3412841.3441898). [[bibtex](https://github.com/MBradbury/publications/raw/master/bibtex/Bradbury_2021_TrustAssessment32.bib)] [[file](https://github.com/MBradbury/publications/raw/master/papers/SAC-DADS2021.pdf)] [[dataset](https://doi.org/10.5281/zenodo.4312801)].
 
 ## Repository Structure
 
 This repository is structured as follows, with the most important implementation being in:
 
- - The implementation of firmware for IoT and Edge nodes is contained in [/wsn/node](https://github.com/MBradbury/iot-trust-task-alloc/tree/master/wsn/node) and [/wsn/edge](https://github.com/MBradbury/iot-trust-task-alloc/tree/master/wsn/edge) respectively.
- - The implementation of two example resource-rich applications and the root node application is contained in [/resource_rich](https://github.com/MBradbury/iot-trust-task-alloc/tree/master/resource_rich).
+ - The implementation of firmware for IoT and Edge nodes is contained in [/wsn/node](https://github.com/HamoodQ/trust_project01/tree/master/wsn/node) and [/wsn/edge](https://github.com/HamoodQ/trust_project01/tree/master/wsn/edge) respectively.
+ - The implementation of two example resource-rich applications and the root node application is contained in [/resource_rich](https://github.com/HamoodQ/trust_project01/tree/master/resource_rich).
 
 Other directories contain supporting code:
 
- - The [/tools](https://github.com/MBradbury/iot-trust-task-alloc/tree/master/tools) and [/tests/run](https://github.com/MBradbury/iot-trust-task-alloc/tree/master/tests/run) directories contains various tools in order to setup and run experiments
- - The [/analysis](https://github.com/MBradbury/iot-trust-task-alloc/tree/master/analysis) directory contains scripts to analyse and graph results from experiments
+ - The [/tools](https://github.com/HamoodQ/trust_project01/tree/master/tools) and [/tests/run](https://github.com/HamoodQ/trust_project01/tree/master/tests/run) directories contains various tools in order to setup and run experiments
+ - The [/analysis](https://github.com/HamoodQ/trust_project01/tree/master/analysis) directory contains scripts to analyse and graph results from experiments
 
 # Setup
 
@@ -38,13 +35,13 @@ python3 -m pip install pexpect
 ```bash
 mkdir ~/wsn
 cd ~/wsn
-git clone -b petras https://github.com/MBradbury/contiki-ng.git
+git clone -b https://github.com/HamoodQ/contiki
 git submodule update --init
 ```
 
-Edit `~/.bashrc` to add the path to Contiki-NG before the interactivity check:
+Edit `~/.bashrc` to add the path to Contiki before the interactivity check:
 ```bash
-export CONTIKING_DIR="~/wsn/contiki-ng"
+export CONTIKING_DIR="~/wsn/contiki"
 export COOJA_DIR="$CONTIKING_DIR/tools/cooja"
 ```
 
@@ -52,8 +49,8 @@ export COOJA_DIR="$CONTIKING_DIR/tools/cooja"
 
 ```bash
 cd ~/wsn
-git clone https://github.com/MBradbury/iot-trust-task-alloc.git
-cd iot-trust-task-alloc && git submodule update --init
+git clone https://github.com/HamoodQ/trust_project01
+cd trust_project01 && git submodule update --init
 ```
 
 4. Install Wireshark
@@ -121,13 +118,13 @@ python3 -m pip install --upgrade "git+https://github.com/sbtinstruments/asyncio-
 
 ```bash
 cd ~
-git clone -b petras https://github.com/MBradbury/contiki-ng.git
-cd contiki-ng && git submodule update --init
+git clone -b https://github.com/HamoodQ/contiki
+cd contiki && git submodule update --init
 ```
 
 Build the tunslip6 executable
 ```bash
-cd ~/contiki-ng/tools/serial-io
+cd ~/contiki/tools/serial-io
 make
 ```
 
@@ -135,8 +132,8 @@ make
 
 ```bash
 cd ~
-git clone https://github.com/MBradbury/iot-trust-task-alloc.git
-cd iot-trust-task-alloc && git submodule update --init
+git clone https://github.com/HamoodQ/trust_project01
+cd trust_project01 && git submodule update --init
 ```
 
 ## Resource Rich Nodes (Edges) and Resource Constrained Nodes (Monitors)
@@ -166,8 +163,8 @@ python3 -m pip install --upgrade "git+https://github.com/chrysn/aiocoap#egg=aioc
 
 ```bash
 cd ~
-git clone https://github.com/MBradbury/iot-trust-task-alloc.git
-cd iot-trust-task-alloc && git submodule update --init
+git clone https://github.com/HamoodQ/trust_project01
+cd trust_project01 && git submodule update --init
 ```
 
 ## Building the border router
@@ -201,7 +198,7 @@ nohup python3 -m tools.run.edge --application monitoring 2 --application bad_rou
 
 You will need to create a file that details the configuration of your tests. A default file exists at `common/configuration.py.example` that can be copied to `common/configuration.py` and edited. In this example file there are six devices deployed with `wsn1` acting as the root, `wsn2` and `wsn6` acting as edge nodes, and the remaining devices acting as IoT nodes.
 
-The `hostname_to_ips` variable specifies a mapping from hostnames (which needs to be configured on the linux machines acting as observers) and the IPv6 addresses of the attached IoT devices. The root IPv6 address is set to fd00::1 and is hardcoded in `tools/run/root.py`. The other IPv6 addresses can be found in a number of ways. One approach is to follow the Contiki-NG [tutorial to ping devices](https://github.com/contiki-ng/contiki-ng/wiki/Tutorial:-IPv6-ping). Alternatively when flashing firmware the 'Primary IEEE Address' of a device will be shown similarly to the example below. This can be converted into IPv6 address by: (1) removing the colons, (2) replacing the leading 00 with 2, (3) adding fd00:: before the 2, and finally (4) adding colons every four hex characters from the right. So `00:12:4B:00:14:D5:2B:D6` becomes `fd00::212:4B00:14D5:2BD6`.
+The `hostname_to_ips` variable specifies a mapping from hostnames (which needs to be configured on the linux machines acting as observers) and the IPv6 addresses of the attached IoT devices. The root IPv6 address is set to fd00::1 and is hardcoded in `tools/run/root.py`. The other IPv6 addresses can be found in a number of ways. One approach is to follow the Contiki-NG [tutorial to ping devices](https://github.com/contiki-). Alternatively when flashing firmware the 'Primary IEEE Address' of a device will be shown similarly to the example below. This can be converted into IPv6 address by: (1) removing the colons, (2) replacing the leading 00 with 2, (3) adding fd00:: before the 2, and finally (4) adding colons every four hex characters from the right. So `00:12:4B:00:14:D5:2B:D6` becomes `fd00::212:4B00:14D5:2BD6`.
 
 ```
 Opening port /dev/ttyUSB0, baud 460800
@@ -219,32 +216,32 @@ The `root_node` variable specifies which observer will run the root node, `devic
 
 2. Build
 
-Edit `~/wsn/iot-trust-task-alloc/tools/setup.py` to specify the nodes used in the network then run it.
+Edit `~/wsn/trust_project01/tools/setup.py` to specify the nodes used in the network then run it.
 
 
 ```bash
-cd ~/wsn/iot-trust-task-alloc
+cd ~/wsn/trust_project01
 ./tools/setup.py <trust-model> <trust-choose>
 ```
 
 3. On Root
 
 ```bash
-cd ~/iot-trust-task-alloc
+cd ~/trust_project01
 ./tests/run/root.sh
 ```
 
 4. On Observer for Sensor Nodes
 
 ```bash
-cd ~/iot-trust-task-alloc
+cd ~/trust_project01
 ./tests/run/wsn.sh
 ```
 
 5. On Edges
 
 ```bash
-cd ~/iot-trust-task-alloc
+cd ~/trust_project01
 ./tests/run/edge.sh
 ```
 
@@ -254,11 +251,11 @@ Alternatively you can deploy applications manually instead of using the test scr
 
 1. Configure and build
 
-Edit `~/wsn/iot-trust-task-alloc/tools/setup.py` to specify the nodes used in the network then run it.
+Edit `~/wsn/trust_project01/tools/setup.py` to specify the nodes used in the network then run it.
 
 
 ```bash
-cd ~/wsn/iot-trust-task-alloc
+cd ~/wsn/trust_project01
 ./tools/setup.py <trust-model> <trust-choose>
 ```
 
@@ -277,7 +274,7 @@ sudo service mosquitto restart
 
 The keyserver and mqtt-coap-bridge now needs to be started:
 ```bash
-cd ~/iot-trust-task-alloc/resource_rich/root
+cd ~/trust_project01/resource_rich/root
 ./root_server.py -k keystore
 ```
 
@@ -328,7 +325,7 @@ Flash and run the terminal
 
 Now start up the Edge bridge:
 ```bash
-~/iot-trust-task-alloc/resource_rich/applications
+~/trust_project01/resource_rich/applications
 ./edge_bridge.py
 ```
 
