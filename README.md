@@ -1,4 +1,4 @@
-# Claculate the trust worthnis.
+# IoT Trust
 Internet of Things (IoT) applications are intended to be used to solve issues in a range of settings, ranging from building security to smart city surveillance and emergency response. Many IoT devices, on the other hand, are resource limited and lack the capability or knowledge needed to compute results for tasks that they may be asked to perform. Instead, these tasks would need to be offloaded to a server at the network's edge in order to respond quickly. Since these networks will have multiple organisations providing multiple IoT nodes and Edge nodes with varying capabilities, IoT devices will need to know which Edge server they can rely on to respond to a task in a timely manner.
 
 This repository contains a working example of such a framework for trust-based task offloading. We include two examples of applications as well as a variety of trust models.
